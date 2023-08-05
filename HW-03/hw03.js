@@ -213,38 +213,23 @@ console.log(result.next());
 console.log(result.next());
 console.log(result.next()); */
 
-const fibonacciGenerator = function (number) {
-  let index = 0;
-  let lastFiboNumber = 1;
+const fibonacciGenerator = function () {
+  let currentFiboNumber = 0;
+  let nextFiboNumber = 1;
 
   return {
     next: function () {
-      if (index < number) {
-        const value = getNextFibonacciNumber(lastFiboNumber);
-        lastFiboNumber = value;
-        index++;
-        return { value: value, done: false };
-      } else {
-        return { done: false };
-      }
+      const value = currentFiboNumber;
+      const x = nextFiboNumber;
+      nextFiboNumber = currentFiboNumber + nextFiboNumber;
+      currentFiboNumber = x;
+      return { value: value, done: false };
     },
   };
 };
 
-function getNextFibonacciNumber(lastFiboNumber) {
-  let nextFiboNumber = (lastFiboNumber * (1 + Math.sqrt(5))) / 2.0;
-  return Math.round(nextFiboNumber);
-}
+const resultFibo = fibonacciGenerator();
 
-const resultFibo = fibonacciGenerator(15);
-
-console.log(resultFibo.next());
-console.log(resultFibo.next());
-console.log(resultFibo.next());
-console.log(resultFibo.next());
-console.log(resultFibo.next());
-console.log(resultFibo.next());
-console.log(resultFibo.next());
 console.log(resultFibo.next());
 console.log(resultFibo.next());
 console.log(resultFibo.next());
