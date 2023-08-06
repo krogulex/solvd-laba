@@ -282,8 +282,8 @@ const person2 = {
 
   updateInfo: function (newInfo) {
     Object.keys(newInfo).forEach((property) => {
-      if (person.hasOwnProperty(property)) {
-        Object.defineProperty(person, property, {
+      if (person2.hasOwnProperty(property)) {
+        Object.defineProperty(person2, property, {
           value: newInfo[property],
           writable: false,
           configurable: true,
@@ -292,7 +292,5 @@ const person2 = {
     });
   },
 };
-
-const hej = validateObject(person2, personSchema);
 
 console.log(validateObject(person2, personSchema));
