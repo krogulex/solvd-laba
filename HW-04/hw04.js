@@ -7,7 +7,7 @@ const person = {
 
   updateInfo: function (newInfo) {
     Object.keys(newInfo).forEach((property) => {
-      if (person.hasOwnProperty(property)) {
+      if (person.hasOwnProperty(property) && Object.getOwnPropertyDescriptor(person, property).writable){
         Object.defineProperty(person, property, {
           value: newInfo[property],
           writable: false,

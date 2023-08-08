@@ -5,10 +5,12 @@ const customFilterUnique = (array, callback) => {
     return "Input is not an array.";
   }
 
+  const uniqueArray = Array.from(new Set(array));
+
   const filteredArray = [];
 
-  for (let i = 0; i < array.length; i++) {
-    const element = array[i];
+  for (let i = 0; i < uniqueArray.length; i++) {
+    const element = uniqueArray[i];
     if (callback(element)) {
       filteredArray.push(element);
     }
@@ -16,7 +18,7 @@ const customFilterUnique = (array, callback) => {
   return filteredArray;
 };
 
-const array1 = [1, 2, 3, 4, 5, 1];
+const array1 = [1, 2, 3, 4, 5, 1]
 
 const array2 = [
   { id: 1, name: "John" },
@@ -33,6 +35,8 @@ const numberBigerThan2 = (number) => {
     return false;
   }
 };
+
+console.log(customFilterUnique(array1, numberBigerThan2))
 
 const idBigerThan2NameStartsWithM = (object) => {
   if (object.id > 2 && Array.from(object.name)[0] === "M") {
@@ -97,54 +101,55 @@ const array3 = [4, 5, 3, 4];
 //console.log(getArrayIntersection(array1, array3));
 
 const getArrayUnion = (array1, array2) => {
-    const unionArray = [];
+  const unionArray = [];
 
-    for (let i = 0; i < array1.length; i++) {
-        const element = array1[i];
-        if (!array2.includes(element)) {
-          if (!unionArray.includes(element)) {
-            unionArray.push(element);
-          }
-        }
+  for (let i = 0; i < array1.length; i++) {
+    const element = array1[i];
+    if (!array2.includes(element)) {
+      if (!unionArray.includes(element)) {
+        unionArray.push(element);
       }
-    
-      return unionArray;
-}
+    }
+  }
+
+  return unionArray;
+};
 
 //console.log(getArrayUnion(array1, array3));
 
+//Task 5: Array Performance Analysis
 
 const measureArrayPerformance = (fn, array, callback) => {
-const startTime = performance.now()
+  
+  const uniqueArray = Array.from(new Set(array));
 
-fn(array, callback)
+  const startTime = performance.now();
 
-const endTime = performance.now()
+  fn(uniqueArray, callback);
 
-const executionTime = endTime - startTime
+  const endTime = performance.now();
+  const executionTime = endTime - startTime;
 
-console.log(`Function ${fn.name} needed ${executionTime} ms to execute`)
-}
-
+  console.log(`Function ${fn.name} needed ${executionTime} ms to execute`);
+};
 
 const filteredArray = (array) => {
-    array.filter((number) => number > 2)
+  array.filter((number) => number > 2);
 
-    return array
-}
+  return array;
+};
 
-measureArrayPerformance(customFilterUnique, array1, numberBigerThan2)
+measureArrayPerformance(customFilterUnique, array1, numberBigerThan2);
 
-measureArrayPerformance(filteredArray, array1)
+measureArrayPerformance(filteredArray, array1);
 
 /*  When array1 = [1, 2, 3, 4, 5, 1, 2, 2, 5, 1, 2, 3, 4, 5, 1, 2, 2, 5, 1, 2, 3, 4, 5, 1, 2, 2, 5, 1, 2, 3, 4, 5, 1, 2, 2, 5];
-Function customFilterUnique needed 0.055800020694732666 ms to execute
-Function filteredArray needed 0.04319995641708374 ms to execute
-
+Function customFilterUnique needed 0.018500030040740967 ms to execute
+Function filteredArray needed 0.08969998359680176 ms to execute
 
 When array1 = [1, 2, 3, 4, 5, 1];
-Function customFilterUnique needed 0.0471000075340271 ms to execute
-Function filteredArray needed 0.03220003843307495 ms to execute
+Function customFilterUnique needed 0.020500004291534424 ms to execute
+Function filteredArray needed 0.06610000133514404 ms to execute
 
-It can be concluded that the filter method gives a slightly better result than the custom filter function
+It can be concluded that the filter method gives a slightly worse result than the custom filter function
   */
