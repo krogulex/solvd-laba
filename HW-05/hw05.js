@@ -29,11 +29,7 @@ const array2 = [
 ];
 
 const numberBigerThan2 = (number) => {
-  if (number > 2) {
-    return true;
-  } else {
-    return false;
-  }
+  return number > 2 
 };
 
 console.log(customFilterUnique(array1, numberBigerThan2))
@@ -120,7 +116,7 @@ const getArrayUnion = (array1, array2) => {
 //Task 5: Array Performance Analysis
 
 const measureArrayPerformance = (fn, array, callback) => {
-  
+
   const uniqueArray = Array.from(new Set(array));
 
   const startTime = performance.now();

@@ -10,8 +10,6 @@ const person = {
       if (person.hasOwnProperty(property) && Object.getOwnPropertyDescriptor(person, property).writable){
         Object.defineProperty(person, property, {
           value: newInfo[property],
-          writable: false,
-          configurable: true,
         });
       }
     });
