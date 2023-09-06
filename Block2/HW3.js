@@ -6,15 +6,17 @@
 function promiseAll(array) {
   return new Promise((resolve, reject) => {
     const results = [];
+    let numberOfResolved = 0;
 
     for (let i = 0; i < array.length; i++) {
       const promise = array[i];
 
       promise
         .then((result) => {
-          results.push(result);
+          results[i] = result;
+          numberOfResolved++;
 
-          if (array.length === results.length) {
+          if (array.length === numberOfResolved) {
             resolve(results);
           }
         })
@@ -27,13 +29,17 @@ function promiseAll(array) {
 
 //const promises = [Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)];
 //const promises = [Promise.resolve(1), Promise.reject(2), Promise.resolve(3)];
+const delay = (ms, value) =>
+  new Promise((res) => setTimeout(() => res(value), ms));
+
+const promises = [delay(3000, "a"), delay(1000, "b"), delay(2000, "c")];
 
 /* promiseAll(promises)
   .then((results) => {
-    console.log("All promises resolved:", results); // Expected: [1, 2, 3]
+    console.log("All promises resolved:", results);
   })
   .catch((error) => {
-    console.error("At least one promise rejected:", error); // Expected: [2]
+    console.error("At least one promise rejected:", error);
   }); */
 
 //Task 2: Implement promiseAllSettled Function
@@ -41,6 +47,7 @@ function promiseAll(array) {
 function promiseAllSettled(array) {
   return new Promise((resolve, reject) => {
     const results = [];
+    let numberOfSettled = 0;
 
     for (let i = 0; i < array.length; i++) {
       const promise = array[i];
@@ -51,9 +58,10 @@ function promiseAllSettled(array) {
             status: "fulfilled",
             value: result,
           };
-          results.push(promiseData);
+          results[i] = promiseData;
+          numberOfSettled++
 
-          if (array.length === results.length) {
+          if (array.length === numberOfSettled) {
             resolve(results);
           }
         })
@@ -62,9 +70,10 @@ function promiseAllSettled(array) {
             status: "rejected",
             reason: error,
           };
-          results.push(promiseData);
+          results[i] = promiseData;
+          numberOfSettled++
 
-          if (array.length === results.length) {
+          if (array.length === numberOfSettled) {
             resolve(results);
           }
         });
@@ -72,7 +81,7 @@ function promiseAllSettled(array) {
   });
 }
 
-/* const promises2 = [
+ const promises2 = [
   Promise.resolve(1),
   Promise.reject("Error occurred"),
   Promise.resolve(3),
@@ -83,7 +92,7 @@ promiseAllSettled(promises2).then((results) => {
   // Expected: [{ status: 'fulfilled', value: 1 },
   //            { status: 'rejected', reason: 'Error occurred' },
   //            { status: 'fulfilled', value: 3 }]
-}); */
+});
 
 // Task 3: Implement Chaining of Promises as a Separate Function
 
@@ -154,7 +163,7 @@ function callbackStyleFunction(value, callback) {
   }, 1000);
 }
 
-const promisedFunction = promisify(callbackStyleFunction);
+/* const promisedFunction = promisify(callbackStyleFunction);
 
 promisedFunction(3)
   .then((result) => {
@@ -163,3 +172,4 @@ promisedFunction(3)
   .catch((error) => {
     console.error("Promised function error:", error);
   });
+ */
