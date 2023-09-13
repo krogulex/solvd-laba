@@ -26,6 +26,21 @@ class Book {
   }
 }
 
+// Two examples of polymorphism in classes.
+class FictionBook extends Book {
+  constructor(title, author, isbn, price, availability) {
+    super(title, author, isbn, price, availability);
+    this.genre = 'fiction';
+  }
+}
+
+class NonFictionBook extends Book {
+  constructor(title, author, isbn, price, availability) {
+    super(title, author, isbn, price, availability);
+    this.genre = 'non-fiction';
+  }
+}
+
 //Class for creating users.
 class User {
   // Properties and methods...
@@ -165,6 +180,10 @@ const book3 = new Book("Clean Code: A Handbook of Agile Software Craftsmanship",
 const book4 = new Book("Design Patterns: Elements of Reusable Object-Oriented Software", 'Erich Gamma', "978-0-201-63361-0", 35, 4 );
 const book5 = new Book("JavaScript: The Good Parts", 'Douglas Crockford', "978-0-596-00048-6", 20, 6 );
 
+// Creating instance of polymorphed class
+const fictionBook1 = new FictionBook('The Night Circus', 'Erin Morgenstern', '9780307744432', 15, 1);
+const nonFictionBook1 = new NonFictionBook('The Secret History', 'Donna Tartt', '9781400031702', 10, 3);
+
 // Creating instances of User.
 const user1 = new User("Alice Smith", "alice@example.com", 1);
 const user2 = new User("Bob Johnson", "bob@example.com", 2);
@@ -176,7 +195,7 @@ const cart2 = new Cart(user2);
 const cart3 = new Cart(user3);
 
 //Adding few books to cart1. cart1 belongs to user1.
-cart1.addBook(book1);
+cart1.addBook(fictionBook1);
 cart1.addBook(book2);
 cart1.addBook(book3);
 
@@ -203,6 +222,8 @@ bookstore.addBook(book2);
 bookstore.addBook(book3);
 bookstore.addBook(book4);
 bookstore.addBook(book5);
+bookstore.addBook(fictionBook1);
+bookstore.addBook(nonFictionBook1);
 
 // Searching for books by phrase.
 console.log("Searching bookstore for books by phrase:");
@@ -216,7 +237,7 @@ console.log(book2);
 //Scenario with payment example for user3
 
 cart3.addBook(book4);
-cart3.addBook(book5);
+cart3.addBook(fictionBook1);
 
 //Adding discount to book4
 book4.applyDiscount(20);
