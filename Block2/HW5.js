@@ -17,7 +17,6 @@ class Stack {
   // Method for pushing new element to stack
   push(element) {
     this.elements.push(element);
-    console.log(`Added element to stack: ${element}`);
 
     // Condition to establish max and min stack value
     if (element > this.maxStack || this.maxStack === null) {
@@ -26,12 +25,13 @@ class Stack {
     if (element < this.minStack || this.minStack === null) {
       this.minStack = element;
     }
+
+    return element;
   }
 
   // Method for poping upper element from the stack
   pop() {
     const lastElement = this.elements.pop();
-    console.log(`Poped element from the stack: ${lastElement}`);
 
     // Condition to possible change in minStack and maxStack values
     if (this.elements.length === 0) {
@@ -44,20 +44,22 @@ class Stack {
         this.maxStack = Math.max(this.elements);
       }
     }
+
+    return lastElement;
   }
 
   // Method to console.log the upper value on the stack
   peek() {
     const lastElement = this.elements[this.elements.length - 1];
-    console.log(`Peek element from the stack: ${lastElement} `);
+    return lastElement;
   }
 
   // Method for getting minimal value from the stack
   getMin() {
     if (this.minStack === null) {
-      console.log("There is no min stack");
+      return console.log("There is no min stack");
     } else {
-      console.log(`Min stack is: ${this.minStack}`);
+      return console.log(`Min stack is: ${this.minStack}`);
     }
   }
 
@@ -82,19 +84,19 @@ class Queue {
   // Method for addding elements to the queue
   enqueue(element) {
     this.elements.push(element);
-    console.log(`Added element to que: ${element}`);
+    return element;
   }
 
   // Method for removing first element from the queue
   dequeue() {
     const firstElement = this.elements.shift();
-    console.log(`First element from the que was removed: ${firstElement}`);
+    return firstElement;
   }
 
   // Method for console.log first element in line from the queue
   peek() {
     const firstElement = this.elements[0];
-    console.log(`Peek element from the queue: ${firstElement}`);
+    return firstElement;
   }
 }
 
@@ -159,8 +161,7 @@ class BinaryTree {
       throw new Error("Can't find this node ");
     }
     if (data === node.data) {
-      console.log(`Node was found:`);
-      console.log(node);
+      return node;
     } else if (data < node.data) {
       return this.searchNode(node.left, data);
     } else {
@@ -193,7 +194,7 @@ class BinaryTree {
         return console.log(`This binary tree is not valid BST`);
       }
     }
-    console.log(`This binary tree is valid BST`);
+    return console.log(`This binary tree is valid BST`);
   }
 }
 
@@ -248,8 +249,7 @@ class Graph {
       queue.shift();
     }
 
-    // Consoling result
-    console.log(
+    return console.log(
       `Result of Breadth First Search starting from vertex "${vertex}": ${visited}`
     );
   }
@@ -277,7 +277,7 @@ class Graph {
     }
 
     // Consoling result
-    console.log(
+    return console.log(
       `Result of Depth First Search starting from vertex "${vertex}": ${visited}`
     );
   }
@@ -294,36 +294,36 @@ class Graph {
 
   BFSShortestPath(startVertex, endVertex) {
     const queue = [startVertex]; // Queue with the starting vertex
-    const visited = [startVertex];
+    const visited = {}; // Visited
     const previous = {}; // Prevoious vertex
 
     previous[startVertex] = null; // There is no prevoius vertex
+    visited[startVertex] = true; // StartVertex as visited
 
     // Loop until queue is empty
     while (queue.length > 0) {
       const currentVertex = queue.shift();
 
-      console.log(visited);
       // Checking if vertex with the smallest distance is the end vertex
       if (currentVertex === endVertex) {
         const path = this.reconstructPath(previous, endVertex); // Creating path
-        console.log(
+
+        return console.log(
           `Shortest path from ${startVertex} to ${endVertex}: ${path}`
         );
-        return;
       }
 
       // Loop in neighbors of the current vertex
       for (const neighbor of this.vertices[currentVertex]) {
         if (!visited[neighbor]) {
           queue.push(neighbor);
-          visited.push(neighbor); // Adding to visited
-          previous[neighbor] = currentVertex; // Seting the previous vertex of the neighbor
+          visited[neighbor] = true;
+          previous[neighbor] = currentVertex;
         }
       }
     }
 
-    console.log(`No path found from ${startVertex} to ${endVertex}`);
+    return console.log(`No path found from ${startVertex} to ${endVertex}`);
   }
 
   dijkstraShortestPath(startVertex, endVertex) {
@@ -356,10 +356,9 @@ class Graph {
       // Checking if vertex with the smallest distance is the end vertex
       if (minVertex === endVertex) {
         const path = this.reconstructPath(previous, endVertex);
-        console.log(
+        return console.log(
           `Shortest path from ${startVertex} to ${endVertex}: ${path}`
         );
-        return;
       }
 
       if (!visited.includes(minVertex)) {
@@ -375,133 +374,127 @@ class Graph {
       }
     }
 
-    console.log(`No path found from ${startVertex} to ${endVertex}`);
+    return console.log(`No path found from ${startVertex} to ${endVertex}`);
   }
 }
 
-// Class for LinkedList 
+// Class for LinkedList
 class LinkedList {
-    constructor() {
-      this.head = null;
-    }
-  
-    // Method to insert a new node at the end of the linked list
-    insert(data) {
-      const newNode = { data, next: null };
-      if (!this.head) {
-        // If the list is empty, create first element
-        this.head = newNode;
-      } else { // else add next element to existed last element
-        let current = this.head;
-        while (current.next) {
-          current = current.next;
-        }
-        current.next = newNode;
-      }
-    }
-  
-    // Method for deleting a specific node from the list
-    delete(data) {
-      if (this.head.data === data) {
-        // If deleting the head, next element become the head
-        this.head = this.head.next;
-        return;
-      }
+  constructor() {
+    this.head = null;
+  }
+
+  // Method to insert a new node at the end of the linked list
+  insert(data) {
+    const newNode = { data, next: null };
+    if (!this.head) {
+      // If the list is empty, create first element
+      this.head = newNode;
+    } else {
+      // else add next element to existed last element
       let current = this.head;
-      let prev = null;
-      while (current && current.data !== data) {
-        prev = current;
+      while (current.next) {
         current = current.next;
       }
-      if (!current) {
-        console.log('Node is not found')
-        return;
+      current.next = newNode;
+    }
+  }
+
+  // Method for deleting a specific node from the list
+  delete(data) {
+    if (this.head.data === data) {
+      // If deleting the head, next element become the head
+      this.head = this.head.next;
+      return;
+    }
+    let current = this.head;
+    let prev = null;
+    while (current && current.data !== data) {
+      prev = current;
+      current = current.next;
+    }
+    if (!current) {
+      return console.log("Node is not found");
+    }
+    // Remove the current node from the list by updating the previous node's next pointer
+    prev.next = current.next;
+  }
+
+  // Method for searching a node with a specific value and return it
+  search(data) {
+    let current = this.head;
+    while (current) {
+      if (current.data === data) {
+        return current;
       }
-      // Remove the current node from the list by updating the previous node's next pointer
-      prev.next = current.next;
+      current = current.next;
     }
-  
-    // Method for searching a node with a specific value and return it
-    search(data) {
-      let current = this.head;
-      while (current) {
-        if (current.data === data) {
-            console.log('Current element: ')
-            console.log(current)
-          return 
-        }
-        current = current.next;
+    return console.log("Node is not found");
+  }
+
+  // Method for detecting a cycle in the linked list
+  hasCycle() {
+    let slow = this.head;
+    let fast = this.head;
+
+    while (fast !== null && fast.next !== null) {
+      slow = slow.next; // Moving slow pointer by one step
+      fast = fast.next.next; // Moving fast pointer by two steps
+
+      // If the fast pointer meets the slow pointer, there is a cycle
+      if (slow === fast) {
+        return console.log("There is a cycle in this linked list");
       }
-      console.log('Node is not found')
-      return
     }
 
-    // Method for detecting a cycle in the linked list
-    hasCycle() {
-        let slow = this.head;
-        let fast = this.head;
+    return console.log("There is no cycle in this linked list");
+  }
 
-        while (fast !== null && fast.next !== null) {
-            slow = slow.next;         // Moving slow pointer by one step
-            fast = fast.next.next;    // Moving fast pointer by two steps
+  // Method for consoling list which does not have a cycle
+  consoleList() {
+    let current = this.head;
+    const result = [];
 
-            // If the fast pointer meets the slow pointer, there is a cycle
-            if (slow === fast) {
-                console.log("There is a cycle in this linked list")
-                return true;
-            }
-        }
-
-        console.log("There is no cycle in this linked list")
-        return false;
+    while (current) {
+      result.push(current.data);
+      current = current.next;
     }
 
-    // Method for consoling list which does not have a cycle
-    consoleList() {
-        let current = this.head;
-        const result = [];
-
-        while (current) {
-            result.push(current.data);
-            current = current.next;
-        }
-
-        console.log(result.join(' -> '));
-    }
+    return console.log(result.join(" -> "));
+  }
 }
 
-/* 
 // Creating new Stack and use theirs methods
 const stack = new Stack();
 
-stack.push(2);
-stack.push(10);
-stack.pop();
-stack.push(50);
+console.log(`Added elements to stack:`, stack.push(2), stack.push(10));
+console.log(`Poped element from the stack:`, stack.pop());
+console.log(`Added elements to stack:`, stack.push(50));
 
-stack.peek();
+console.log(`Peek element from the stack:`, stack.peek());
 
 console.log(stack);
 
 // Getting min and max
 stack.getMin();
-stack.getMax(); */
+stack.getMax();
 
-/* 
 // Creating new Queue and use theirs methods
 const queue = new Queue();
 
-queue.enqueue(10);
-queue.enqueue(20);
-queue.enqueue(30);
+console.log(
+  `Added elements to stack:`,
+  queue.enqueue(10),
+  queue.enqueue(20),
+  queue.enqueue(30)
+);
 
-queue.dequeue();
+console.log("Remove element from the start of the queue", queue.dequeue());
 
-queue.peek();
+console.log(`Peek element from the queue:`, queue.peek());
 
-console.log(queue); */
+console.log(queue);
 
-/*  
 // Creating new binaryTree and use their methods
 const binaryTree = new BinaryTree();
 
@@ -516,12 +509,13 @@ binaryTree.insert(1);
 console.log(binaryTree);
 
 binaryTree.search(2);
+console.log(`Node was found:`, binaryTree.search(2));
 
 const inOrderTraversal = binaryTree.inOrderTraversal();
-console.log(`Traversal in order: ${inOrderTraversal}`)
-binaryTree.isBST() */
+console.log(`Traversal in order: ${inOrderTraversal}`);
+binaryTree.isBST();
 
-/* // Creating graph and using theirs methods
+// Creating graph and using theirs methods
 
 const graph = new Graph();
 
@@ -547,32 +541,32 @@ graph.DFS("2");
 
 // Calculating shortest path in graph
 graph.BFSShortestPath("4", "3");
-graph.dijkstraShortestPath("4", "3"); */
+graph.dijkstraShortestPath("4", "3");
 
-//Creating a linkedList 
+//Creating a linkedList
 const linkedList = new LinkedList();
 
 //Inserting elements
 linkedList.insert(1);
 linkedList.insert(2);
 linkedList.insert(3);
-linkedList.insert(5)
-linkedList.insert(6)
+linkedList.insert(5);
+linkedList.insert(6);
 
-console.log(linkedList)
+console.log(linkedList);
 
 // Searching for specific element
-linkedList.search(2);
-linkedList.search(10);
+console.log("Current element: ", linkedList.search(2));
+console.log("Current element: ", linkedList.search(10));
 
 // Deleting specific element
 linkedList.delete(1);
 
-console.log(linkedList)
+console.log(linkedList);
 
 // Making cycle in the existed list
 //linkedList.head.next.next.next = linkedList.head.next;
 
-linkedList.hasCycle(); 
+linkedList.hasCycle();
 
-linkedList.consoleList()
+linkedList.consoleList();
