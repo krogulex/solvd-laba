@@ -8,10 +8,8 @@
 // Importing linkedList Class
 const LinkedList = require("./HW5");
 
-
 // Class for custum hash table
 class CustomHashTable {
-
   // Conmstructor creates table with size 10, and every element is a linked list to hadnle collisions
   constructor() {
     this.size = 10;
@@ -52,8 +50,20 @@ class CustomHashTable {
   // Method for inserting new data
   insert(key, value) {
     const index = this.hash(key);
+    const bucket = this.table[index];
 
-    // insert is a linked list method
+    let currentNode = bucket.head;
+
+    // Loop for checking if there is a node with key
+    while (currentNode) {
+      if (currentNode.data.key === key) {
+        // Updating value
+        currentNode.data.value = value;
+        return;
+      }
+      currentNode = currentNode.next;
+    }
+    // Insert is a linked list method
     this.table[index].insert({ key, value });
   }
 
@@ -69,7 +79,10 @@ class CustomHashTable {
     while (currentNode) {
       if (currentNode.data.key === key) {
         // Returning found key and value
-        return currentNode.data.value;
+        return {
+          key: currentNode.data.key,
+          value: currentNode.data.value,
+        };
       }
       currentNode = currentNode.next;
     }
@@ -94,16 +107,30 @@ const hashTable = new CustomHashTable();
 hashTable.insert("name", "John");
 hashTable.insert("lastName", "Doe");
 
+console.log(hashTable.table[1]);
+
+// Inserting data with the same key to see if values override
 hashTable.insert("name", "Mary");
 hashTable.insert("lastName", "Smith");
 
-//  Consoling table
+// Checking if the values was updated
+console.log(hashTable.table[1]);
+
+// Console log whole table
 console.log(hashTable.table);
 
-console.log(hashTable.table[7]);
-
 // Deleting element from hash table
-hashTable.delete("name");
+hashTable.delete("lastName");
 
 // Consoling to see the result
+console.log(hashTable.table[1]);
+
+// Consoling whole table
+console.log(hashTable.table);
+
+// Inserting other key - value which hashes to already occupied index in the table
+hashTable.insert("team6", "Lakers");
+
+// Checking the result
 console.log(hashTable.table[7]);
+console.log(hashTable.table[7].head.next);
