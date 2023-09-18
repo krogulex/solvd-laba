@@ -464,7 +464,7 @@ class LinkedList {
   }
 }
 
-// Creating new Stack and use theirs methods
+/* // Creating new Stack and use theirs methods
 const stack = new Stack();
 
 console.log(`Added elements to stack:`, stack.push(2), stack.push(10));
@@ -570,3 +570,6 @@ console.log(linkedList);
 linkedList.hasCycle();
 
 linkedList.consoleList();
+ */
+
+module.exports = LinkedList;
