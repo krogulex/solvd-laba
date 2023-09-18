@@ -63,7 +63,7 @@ class CustomHashTable {
       }
       currentNode = currentNode.next;
     }
-    // Insert is a linked list method
+    // Inserting new key -value to the table. Insert is a linked list method
     this.table[index].insert({ key, value });
   }
 
